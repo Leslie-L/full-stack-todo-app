@@ -24,6 +24,8 @@ services:
 
   backend:
     build: ./backend
+    volumes:
+    - ./backend:/app
     restart: always
     env_file:
       - ./.env
