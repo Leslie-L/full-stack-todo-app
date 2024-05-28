@@ -1,10 +1,18 @@
 const  express =  require('express');
 const {createTask,getTask,updateTask} = require('../schemas/task.schema')
+const ModelTasks = require('../model/tasks.model')
+
 
 const router = express.Router()
+const modelTasks = new ModelTasks();
 
-router.get('/',(req,res)=>{
-    res.status(200).send("hi tasks... this es")
+router.get('/',async (req,res)=>{
+    try {
+        const answer = await modelTasks.getTasks()
+        res.status(200).json({data:answer})
+    } catch (error) {
+        res.status(500).json({msn:"Server error"})
+    }
 })
 router.get('/:id',(req,res)=>{
     const {id} = req.params;
@@ -25,7 +33,7 @@ router.post('/',(req,res)=>{
 router.patch('/:id',(req,res)=>{
     const {id} = req.params;
     const data= {...req.body,id}
-    const {error,value} = update.validate(data,{abortEarly:false})
+    const {error,value} = updateTask.validate(data,{abortEarly:false})
     if(error)
         res.status(401).json({msn:error})  
 
