@@ -18,6 +18,9 @@ class ModelTasks {
     async updateTask(id,data){
         await db.query('UPDATE tasks SET task = $1, finished = $2 WHERE id = $3',[data.task,data.finished,id])
     }
+    async changeStateTask(id){
+        await db.query('UPDATE tasks SET finished = NOT finished WHERE id = $1',[id])
+    }
     async deleteTaks(id){
         await db.query('DELETE FROM tasks WHERE id=$1;',[id])
     }

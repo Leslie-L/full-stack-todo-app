@@ -65,6 +65,19 @@ router.patch('/:id',async (req,res)=>{
          return res.status(500).json({msn:"Server error"})
     }
 })
+router.patch('/state/:id',async (req,res)=>{
+    const {id} = req.params;
+    const {error,data} = getTask.validate({id},{abortEarly:false})
+    if(error)
+        res.status(401).json({msn:error})  
+    try {
+        await modelTasks.changeStateTask(id)
+        return res.status(200).json({message: 'Task updated successfully' });
+        
+    } catch (error) {
+         return res.status(500).json({msn:"Server error"})
+    }
+})
 router.delete('/:id',(req,res)=>{
     const {id} = req.params;
     const {error,value} = getTask.validate({id},{abortEarly:false})
